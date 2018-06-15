@@ -1,12 +1,11 @@
+certifi==2018.4.16
+chardet==3.0.4
 Django==1.11
+django-bootstrap3==10.0.1
 django-filter==1.1.0
-# djangorestframework==3.8.2
-fandango==13.7.0
-MySQL-python==1.2.5
+django-tables2==1.21.2
 numpy==1.14.3
-panic==6.5.0
-pytango==9.2.2
-PyTangoArchiving==8.3.1
 pytz==2018.4
+requests==2.19.0
 six==1.11.0
-taurus==4.3.1
+urllib3==1.23
