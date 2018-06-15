@@ -1,0 +1,7 @@
+{% for group in groups %}
+{% if not selected_group and group.name == "ALL" or group.name == selected_group %}
+<a class="btn btn-lg {{ group.cls }}" href="{{ group.href }}" role="button">{{ group.name }}</a>
+{% else %}
+<a class="btn btn-sm {{ group.cls }}" href="{{ group.href }}" role="button">{{ group.name }}</a>
+{% endif %}
+{% endfor %}

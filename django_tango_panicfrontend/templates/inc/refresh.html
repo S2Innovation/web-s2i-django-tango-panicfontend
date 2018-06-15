@@ -1,0 +1,17 @@
+<script>
+
+function refresh() {
+  $.ajax({
+  url: "{{ request.get_full_path }}",
+  success: function(data) {
+    $('#for_refresh').html(data);
+  }
+ });
+}
+
+$(document).ready(function ($) {
+  refresh();
+  var int = setInterval("refresh()", 3000);
+});
+
+</script>

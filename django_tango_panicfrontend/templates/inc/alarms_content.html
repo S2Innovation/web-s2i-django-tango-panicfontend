@@ -1,0 +1,14 @@
+{% load render_table from django_tables2 %}
+{% load bootstrap3 %}
+    <center>
+        {% include "inc/groups.html" %}
+        <a class="btn btn-medium btn-info" href="{% url 'history' %}" role="button">History</a>
+    </center>
+
+    <h3>Active alarms: <span class="pull-right">{{ clock }}</span></h3>
+
+    {% render_table active_alarms_table %}
+
+    <h3>Not active alarms:</h3>
+    {% render_table alarms_table %}
+

@@ -3,4 +3,17 @@
 
 {% block bootstrap3_title %}{% block title %}{% endblock %}{% endblock %}
 
-{% block bootstrap3_content %}{% block content %}{% endblock %}{% endblock %}
+{% block bootstrap3_extra_head %}
+
+<link rel="stylesheet" href="{% static 'css/theme.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/panic.css' %}">
+
+{% block extra_head %}{% endblock %}
+{% endblock %}
+
+{% block bootstrap3_content %}
+<div class="container">
+    <h1>PANIC/PyAlarm monitring</h1>
+</div>
+{% block content %}{% endblock %}{% endblock %}
+

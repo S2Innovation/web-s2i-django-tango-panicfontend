@@ -4,7 +4,12 @@
 {% load bootstrap3 %}
 
 {% block content %}
+<div id="for_refresh" class="container">
+    {% include 'inc/history_content.html' %}
+</div>
 
-{% render_table history_table %}
+{% endblock %}
 
+{% block bootstrap3_extra_script %}
+{% include 'inc/refresh.html' %}
 {% endblock %}

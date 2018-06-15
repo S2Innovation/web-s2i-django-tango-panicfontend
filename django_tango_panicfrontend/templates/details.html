@@ -4,9 +4,24 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<p>
-{{ alarm.tag }}
-</p>
-{% render_table history_table %}
+<div class="container">
+    <center>
+        <a class="btn btn-medium btn-info" href="{% url 'alarms' %}" role="button">Alarms</a>
+        <a class="btn btn-medium btn-info" href="{% url 'history' %}" role="button">History</a>
+    </center>
+<h2>
+    <b>{{ alarm.severity }}:</b> {{ alarm.tag }}
+</h2>
 
+<p>
+{{ alarm.description }}
+</p>
+<div id="for_refresh">
+{% include 'inc/details_content.html' %}
+</div>
+</div>
+{% endblock %}
+
+{% block bootstrap3_extra_script %}
+{% include 'inc/refresh.html' %}
 {% endblock %}
