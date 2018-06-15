@@ -111,6 +111,8 @@ def alarms_history(request):
         elif k not in ['page', 'per_page', 'page_size', 'sort', 'order', 'sort_by', 'order_by', 'group', 'grouping']:
             additional_query += '&'+str(k) + '=' + request.GET[k]
 
+    resp = requests.get(_url('sync'))
+
     resp = requests.get(_url('history/?page_size='+str(5000)+additional_query))
     # print resp.json()
 
@@ -144,6 +146,8 @@ def alarms(request):
     for k in request.GET.keys():
         if k not in ['page', 'per_page', 'page_size', 'sort', 'order', 'sort_by', 'order_by', 'group', 'grouping']:
             additional_query += '&' + str(k) + '=' + request.GET[k]
+
+    resp = requests.get(_url('sync'))
 
     resp = requests.get(_url('alarms/?page_size='+str(5000)+additional_query))
 
@@ -188,6 +192,8 @@ def alarms(request):
 def alarm_details(request,tag):
 
     get_app_settings()
+
+    resp = requests.get(_url('sync'))
 
     resp = requests.get(_url('alarms/%s' % tag))
 
