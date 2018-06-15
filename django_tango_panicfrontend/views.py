@@ -22,8 +22,8 @@ def get_app_settings():
 
     if AlarmsFrontendSettingsModel.objects.count() > 0:
         app_settings = AlarmsFrontendSettingsModel.objects.last()
-        app_settings.panicapi_url_base='http://localhost:8000/panicapi/'
-        app_settings.save()
+        # app_settings.panicapi_url_base='http://localhost:8000/panicapi/'
+        # app_settings.save()
     else:
         app_settings = AlarmsFrontendSettingsModel()
         app_settings.save()
