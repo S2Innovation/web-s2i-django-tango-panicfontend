@@ -14,6 +14,20 @@ from tables import AlarmHistoryTable, FullHistoryTable, AlarmsTable
 
 app_settings = None
 
+resp_cache = {}
+
+def json_result(url):
+    global resp_cache
+    try:
+        resp = requests.get(url)
+        if resp.status_code == 200:
+            resp_cache[url] = resp.json()
+            return resp.json()
+        else:
+            return resp_cache.get(url, {})
+        # print resp.json()
+    except:
+        return resp_cache.get(url,{})
 
 def get_app_settings():
     global app_settings
@@ -44,9 +58,10 @@ def prepare_groups(grouping, prefix="alarms/?"):
 
     for group in AlarmsGroups.objects.filter(grouping=grouping):
         assert isinstance(group, AlarmsGroups)
-        resp = requests.get(_url('alarms/?'+group.query))
 
-        alarms = resp.json()['results']
+        resp = json_result(_url('alarms/?'+group.query))
+
+        alarms = resp.get('results', [])
 
         prefix_with_group = prefix + '&group=' + group.group + '&grouping=' + group.grouping + '&'
 
@@ -110,13 +125,14 @@ def alarms_history(request):
             additional_query += '&alarm__'+k+'='+request.GET[k]
         elif k not in ['page', 'per_page', 'page_size', 'sort', 'order', 'sort_by', 'order_by', 'group', 'grouping']:
             additional_query += '&'+str(k) + '=' + request.GET[k]
+    try:
+        resp = requests.get(_url('sync'))
+    except:
+        pass
 
-    resp = requests.get(_url('sync'))
+    resp = json_result(_url('history/?page_size='+str(5000)+additional_query))
+    history_table = FullHistoryTable(resp.get('results',[]))
 
-    resp = requests.get(_url('history/?page_size='+str(5000)+additional_query))
-    # print resp.json()
-
-    history_table = FullHistoryTable(resp.json()['results'])
     RequestConfig(request, paginate={'per_page': 20}).configure(history_table)
 
     if request.is_ajax():
@@ -147,11 +163,14 @@ def alarms(request):
         if k not in ['page', 'per_page', 'page_size', 'sort', 'order', 'sort_by', 'order_by', 'group', 'grouping']:
             additional_query += '&' + str(k) + '=' + request.GET[k]
 
-    resp = requests.get(_url('sync'))
+    try:
+        resp = requests.get(_url('sync'))
+    except:
+        pass
 
-    resp = requests.get(_url('alarms/?page_size='+str(5000)+additional_query))
+    resp = json_result(_url('alarms/?page_size='+str(5000)+additional_query))
 
-    alarms_result = resp.json()['results']
+    alarms_result = resp.get('results',[])
 
     active_alarms = [a for a in alarms_result if a['severity'] in ['UNACK','RTNUN','ACKED','ERROR']]
 
@@ -193,11 +212,14 @@ def alarm_details(request,tag):
 
     get_app_settings()
 
-    resp = requests.get(_url('sync'))
+    try:
+        resp = requests.get(_url('sync'))
+    except:
+        pass
 
-    resp = requests.get(_url('alarms/%s' % tag))
+    resp = json_result(_url('alarms/%s' % tag))
 
-    alarm = resp.json()
+    alarm = resp
 
     resp = requests.get(_url('history/?alarm__tag=%s' % tag))
 
