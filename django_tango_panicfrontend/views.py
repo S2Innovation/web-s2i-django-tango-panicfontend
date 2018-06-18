@@ -56,6 +56,7 @@ def prepare_groups(grouping, prefix="alarms/?"):
     groups = []
 
     get_app_settings()
+    global app_settings
 
     for group in AlarmsGroups.objects.filter(grouping=grouping):
         assert isinstance(group, AlarmsGroups)
@@ -117,6 +118,7 @@ def prepare_groups(grouping, prefix="alarms/?"):
 def alarms_history(request):
 
     get_app_settings()
+    global app_settings
 
     groups = prepare_groups('history', prefix=str(reverse('history'))+'/?')
 
@@ -156,6 +158,7 @@ def alarms_history(request):
 def alarms(request):
 
     get_app_settings()
+    global app_settings
 
     groups = prepare_groups(request.GET.get('grouping','alarms'), prefix=str(reverse('alarms')) + '/?')
 
@@ -211,6 +214,7 @@ def alarms(request):
 
 def alarm_details(request,tag):
 
+    global app_settings
     get_app_settings()
 
     try:
@@ -222,9 +226,9 @@ def alarm_details(request,tag):
 
     alarm = resp
 
-    resp = requests.get(_url('history/?alarm__tag=%s' % tag))
+    resp = json_result(_url('history/?alarm__tag=%s' % tag))
 
-    history_table = AlarmHistoryTable(resp.json()['results'])
+    history_table = AlarmHistoryTable(resp.get('results', []))
     RequestConfig(request, paginate={'per_page':20}).configure(history_table)
 
     if request.is_ajax():
