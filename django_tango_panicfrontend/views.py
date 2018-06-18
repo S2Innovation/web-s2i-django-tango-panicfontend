@@ -46,6 +46,7 @@ def get_app_settings():
 
 
 def _url(path):
+    global app_settings
     return app_settings.panicapi_url_base + path
 
 
