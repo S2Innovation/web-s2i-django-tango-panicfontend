@@ -172,7 +172,7 @@ def alarms(request):
 
     alarms_result = resp.get('results',[])
 
-    active_alarms = [a for a in alarms_result if a['severity'] in ['UNACK','RTNUN','ACKED','ERROR']]
+    active_alarms = [a for a in alarms_result if a['state'] in ['UNACK','RTNUN','ACKED','ERROR']]
 
     if 'sort' in request.GET.keys():
         key = request.GET['sort']
