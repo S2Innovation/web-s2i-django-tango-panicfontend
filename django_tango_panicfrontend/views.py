@@ -16,10 +16,10 @@ app_settings = None
 
 resp_cache = {}
 
-def json_result(url):
+def json_result(url, timeout=3.0):
     global resp_cache
     try:
-        resp = requests.get(url)
+        resp = requests.get(url, timeout=timeout)
         if resp.status_code == 200:
             resp_cache[url] = resp.json()
             return resp.json()
@@ -129,7 +129,7 @@ def alarms_history(request):
         elif k not in ['page', 'per_page', 'page_size', 'sort', 'order', 'sort_by', 'order_by', 'group', 'grouping']:
             additional_query += '&'+str(k) + '=' + request.GET[k]
     try:
-        resp = requests.get(_url('sync'))
+        resp = requests.get(_url('sync'), timeout=0.1)
     except:
         pass
 
@@ -168,7 +168,7 @@ def alarms(request):
             additional_query += '&' + str(k) + '=' + request.GET[k]
 
     try:
-        resp = requests.get(_url('sync'))
+        resp = requests.get(_url('sync'), timeout=0.1)
     except:
         pass
 
@@ -218,7 +218,7 @@ def alarm_details(request,tag):
     get_app_settings()
 
     try:
-        resp = requests.get(_url('sync'))
+        resp = requests.get(_url('sync'), timeout=0.1)
     except:
         pass
 
