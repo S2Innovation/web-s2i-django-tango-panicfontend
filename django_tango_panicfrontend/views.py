@@ -133,7 +133,7 @@ def alarms_history(request):
     except:
         pass
 
-    resp = json_result(_url('history/?page_size='+str(5000)+additional_query))
+    resp = json_result(_url('history/?page_size='+str(5000)+additional_query), timeout=10.0)
     history_table = FullHistoryTable(resp.get('results',[]))
 
     RequestConfig(request, paginate={'per_page': 20}).configure(history_table)
