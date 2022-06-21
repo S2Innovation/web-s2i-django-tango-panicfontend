@@ -4,7 +4,7 @@ Django==1.11
 django-bootstrap3==10.0.1
 django-filter==1.1.0
 django-tables2==1.21.2
-numpy==1.14.3
+numpy==1.22.0
 pytz==2018.4
 requests==2.19.0
 six==1.11.0
